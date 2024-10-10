@@ -1,5 +1,11 @@
 FROM python:3.11
 
+# Rust 설치
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+# 환경변수 설정
+ENV PATH="/root/.cargo/bin:${PATH}"
+
 # requirements.txt 복사
 COPY requirements.txt .
 
