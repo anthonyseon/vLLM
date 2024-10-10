@@ -1,0 +1,60 @@
+[colab]
+!pip install torch==2.4.0
+!pip install torchvision==0.19.0
+!pip install torchaudio==2.4.0
+!pip install fastapi==0.105.0
+!pip install numpy==1.25.0
+!pip install pydantic==2.9.0
+!pip install vllm==0.6.2
+!pip install nvidia-ml-py
+!pip install langchain_community
+!pip install pynvml
+
+
+
+
+[vessl init script]
+pip install torch==2.4.0
+pip install torchvision==0.19.0
+pip install torchaudio==2.4.0
+pip install fastapi==0.105.0
+pip install numpy==1.25.0
+pip install pydantic==2.9.0
+pip install vllm==0.6.2
+pip install nvidia-ml-py
+pip install langchain_community
+pip install pynvml
+
+
+[python]
+from langchain_community.llms import VLLM
+from huggingface_hub import login  # Hugging Face Hub에 로그인하기 위한 라이브러리
+
+login("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")
+
+llm = VLLM(
+    model="explodinggradients/Ragas-critic-llm-Qwen1.5-GPTQ",
+    trust_remote_code=True,  # mandatory for hf models
+    max_new_tokens=512,
+    top_k=10,
+    top_p=0.95,
+    temperature=0.0,)
+
+
+template = "<|im_start|>user\n{}<|im_end|>\n<|im_start|>assistant\n"
+input_text = """How is the weather today in seoul?"""
+
+simple_instruction = template.format(input_text)
+
+llm.invoke(simple_instruction)
+
+
+
+
+[api]
+python -m vllm.entrypoints.api_server \
+	--model explodinggradients/Ragas-critic-llm-Qwen1.5-GPTQ \
+	--max-mode-len=2048 \
+	--tensor-parallel-size 2
+
+
